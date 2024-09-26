@@ -1,0 +1,20 @@
+pasta_arquivos = os.path.join(settings.MEDIA_ROOT, 'app/static/files')
+    arquivos_info = []
+
+    # Listar os arquivos na pasta
+    for nome_arquivo in os.listdir(pasta_arquivos):
+        caminho_arquivo = os.path.join(pasta_arquivos, nome_arquivo)
+        
+        # Verifica se é um arquivo (e não um diretório)
+        if os.path.isfile(caminho_arquivo):
+            # Obtém informações do arquivo
+            tamanho = os.path.getsize(caminho_arquivo) / (1024 * 1024)  # Tamanho em MB
+            data_conversao = os.path.getmtime(caminho_arquivo)  # Data da última modificação
+
+            arquivos_info.append({
+                'nome_arquivo': nome_arquivo,
+                'tamanho': tamanho,
+                'data_conversao': data_conversao,
+            })
+
+    return JsonResponse(arquivos_info, safe=False)

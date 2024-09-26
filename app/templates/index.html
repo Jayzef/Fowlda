@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fowlda</title>
+    <link rel="stylesheet" href="{% static 'style/estilo.css' %}">
+    <script>
+        function redirectToLink(selectElement) {
+            const selectedValue = selectElement.value;
+            if (selectedValue) {
+                window.location.href = selectedValue;
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <div>
+            <select id="links" onchange="redirectToLink(this)">
+                <option value="">Conversores</option>
+                <option value="{% url 'conversao' %}">Conversor de Vídeo</option>
+                <option value="{% url 'conversao' %}">Conversor de Áudio</option>
+                <option value="{% url 'conversao' %}">Conversor de Imagem</option>
+                <option value="{% url 'conversao' %}">Conversor de Planilhas</option>
+            </select>
+            <button><a href="">Ajuda</a></button>
+            <button><a href="">Sobre</a></button>
+        </div>
+        <div>
+            <p>
+
+            </p>
+            <figure>
+                <img src="" alt="">
+            </figure>
+        </div>
+    </nav>
+    <div>
+        <figure>
+            <img src="{% static 'images/pasta.png' %}" alt="pasta" width="80">
+        </figure>
+        <h1>
+            FOWLDA
+        </h1>
+        <figure>
+            <img src="{% static 'images/pasta.png' %}" alt="pasta" width="80">
+        </figure>
+    </div>
+    <div>
+        <p>
+            Transforme seus arquivos de maneira rápida e fácil com nosso conversor online. Com suporte para uma ampla variedade de formatos, oferecemos uma solução completa para suas necessidades de conversão de documentos, imagens, áudio e vídeo. Seja você um profissional buscando converter arquivos de trabalho ou um usuário comum precisando de uma solução prática, nosso site está aqui para ajudar.
+        </p>
+    </div>
+    <div>
+        <a href="{% url 'conversao' %}"><button>CONVERTER ARQUIVOS</button></a>
+    </div>
+</body>
+</html>

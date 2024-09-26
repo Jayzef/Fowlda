@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Converter Arquivos</title>
+    <link rel="stylesheet" href="{% static 'style/estilo.css' %}">
+</head>
+
+<body>
+    <nav>
+        <div>
+            <button><a href="{% url 'index' %}">voltar</a></button>
+            <select id="links" onchange="redirectToLink(this)">
+                <option value="">Conversores</option>
+                <option value="{% url 'conversao' %}">Conversor de Vídeo</option>
+                <option value="{% url 'conversao' %}">Conversor de Áudio</option>
+                <option value="{% url 'conversao' %}">Conversor de Imagem</option>
+                <option value="{% url 'conversao' %}">Conversor de Planilhas</option>
+            </select>
+            <button><a href="">Ajuda</a></button>
+            <button><a href="">Sobre</a></button>
+        </div>
+        <div>
+            <p>
+
+            </p>
+            <figure>
+                <img src="" alt="">
+            </figure>
+        </div>
+    </nav>
+    <div>
+        <h1>
+            Converter Arquivos
+        </h1>
+    </div>
+    <div>
+        <h2>Conversão</h2>
+        <p>
+            <form class="fileForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="button">Registrar/Alterar produto</button>
+            </form>
+            Para converter o arquivo, verifique os formatos suportados, selecione ou arraste o arquivo desejado até a
+            área indicada. Em seguida, escolha o formato de saída dentre os disponíveis.
+        </p>
+    </div>
+    <div id="drop-zone">
+        <figure>
+            <img src="{% static 'images/upload.png' %}" alt="upload" width="80">
+        </figure>
+        <p>Selecione ou Arraste seus arquivos aqui.</p>
+    </div>
+    <div>
+        <h2>Simplicidade</h2>
+        <p>
+            O conversor pode ser acessado em qualquer dispositivo com acesso à internet, não é necessário a instalação
+            de nenhum programa em seu dispositivo.
+        </p>
+    </div>
+    <figure>
+        <img src="{% static 'images/pdf.png' %}" alt="pdf" width="80">
+    </figure>
+    <div>
+        <h2>Variedade de Formatos</h2>
+        <p>
+            A ferramenta funciona com diversos tipos de documentos diferentes como TXT, DOCX, PDF e ODT. Além disso,
+            todas as conversões são feitas na nuvem, portanto, nenhuma conversão ocupará espaço no seu armazenamento.
+        </p>
+    </div>
+    <figure>
+        <img src="{% static 'images/docx.png' %}" alt="docx" width="80">
+    </figure>
+    <div>
+        <h2>Feedback</h2>
+        <form action="">
+            <textarea name="" id="" cols="30" rows="10"></textarea>
+            <button><a href="">>></a></button>
+        </form>
+    </div>
+    <script>
+        const dropZone = document.getElementById('drop-zone');
+
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dropZone.classList.remove('dragover');
+
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                alert(`Você soltou ${files.length} arquivo(s)`);
+                uploadFiles(files);
+            }
+        });
+
+        function uploadFiles(files) {
+            const formData = new FormData();
+            for (const file of files) {
+                formData.append('files', file);
+            }
+
+            fetch('/upload/', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Erro ao enviar o arquivo:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
