@@ -14,4 +14,4 @@ class CadastroForm(forms.ModelForm):
 class ArquivoForm(forms.ModelForm):
     class Meta:
         model = Arquivo
-        fields = '__all__'
+        fields = ['arquivo', 'chave']

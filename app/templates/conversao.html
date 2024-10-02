@@ -40,11 +40,6 @@
     <div>
         <h2>Conversão</h2>
         <p>
-            <form class="fileForm" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" class="button">Registrar/Alterar produto</button>
-            </form>
             Para converter o arquivo, verifique os formatos suportados, selecione ou arraste o arquivo desejado até a
             área indicada. Em seguida, escolha o formato de saída dentre os disponíveis.
         </p>
@@ -54,6 +49,17 @@
             <img src="{% static 'images/upload.png' %}" alt="upload" width="80">
         </figure>
         <p>Selecione ou Arraste seus arquivos aqui.</p>
+        <form class="fileForm" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <select id="format-select">
+                <option value="">Selecione o formato de saída</option>
+                <option value="pdf">PNG</option>
+                <option value="docx">JPG</option>
+                <option value="txt">TXT</option>
+            </select>
+            <button type="submit" class="button">Enviar</button>
+        </form>
     </div>
     <div>
         <h2>Simplicidade</h2>
@@ -83,30 +89,10 @@
         </form>
     </div>
     <script>
-        const dropZone = document.getElementById('drop-zone');
-
-        dropZone.addEventListener('dragover', (event) => {
-            event.preventDefault();
-            dropZone.classList.add('dragover');
-        });
-
-        dropZone.addEventListener('dragleave', () => {
-            dropZone.classList.remove('dragover');
-        });
-
-        dropZone.addEventListener('drop', (event) => {
-            event.preventDefault();
-            dropZone.classList.remove('dragover');
-
-            const files = event.dataTransfer.files;
-            if (files.length > 0) {
-                alert(`Você soltou ${files.length} arquivo(s)`);
-                uploadFiles(files);
-            }
-        });
-
         function uploadFiles(files) {
             const formData = new FormData();
+            const selectedFormat = document.getElementById('format-select').value;
+            formData.append('format', selectedFormat);
             for (const file of files) {
                 formData.append('files', file);
             }

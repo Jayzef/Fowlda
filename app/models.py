@@ -20,6 +20,9 @@ class Formato(models.Model):
 
 class Arquivo(models.Model):
      arquivo = models.FileField(upload_to='app/static/files')
+     tempo = models.DateTimeField(auto_now_add=True)
+     chave = models.CharField(max_length=25, blank=True)
+     docx_file = models.FileField(upload_to='app/static/files/docx', blank=True, null=True)
      def __str__(self):
           return f"'Arquivo: {self.arquivo} "
      class Meta:
@@ -27,7 +30,7 @@ class Arquivo(models.Model):
         verbose_name_plural = "Arquivos"
 
 class Conversao(models.Model):
-     arquivo = models.ForeignKey(Arquivo, on_delete=models.CASCADE, verbose_name="Arquivo", null=True)
+     arquivo = models.ForeignKey(Arquivo, on_delete=models.CASCADE, verbose_name="Arquivo")
      nome_arquivo = models.CharField(max_length=255, verbose_name="Nome do Arquivo")
      tamanho = models.FloatField(verbose_name="Tamanho")
      data_conversao = models.DateField(verbose_name="Data")
