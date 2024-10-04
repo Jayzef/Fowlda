@@ -109,6 +109,24 @@
                     console.error('Erro ao enviar o arquivo:', error);
                 });
         }
+
+        // adicionando chave aleatória
+
+        chaveCampo = document.getElementById('id_chave')
+
+        function chaveSeguranca(){
+            const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+            let chave = ''
+            
+            for (let i = 0; i < 25; i++) {
+                const indice = Math.floor(Math.random() * caracteres.length)
+                chave += caracteres[indice]
+            }
+            
+            chaveCampo.value = chave
+        }
+
+        chaveSeguranca()
     </script>
 </body>
 

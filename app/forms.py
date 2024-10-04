@@ -15,3 +15,7 @@ class ArquivoForm(forms.ModelForm):
     class Meta:
         model = Arquivo
         fields = ['arquivo', 'chave']
+    def __init__(self, *args, **kwargs):
+        super(ArquivoForm, self).__init__(*args, **kwargs)
+        self.fields['chave'].widget.attrs.update({'style': 'display:none'})
+        self.fields['chave'].label = ''
