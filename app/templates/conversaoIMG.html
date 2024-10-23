@@ -68,7 +68,7 @@
     <div class="alinhamento">
         <div class="principal2">
             <h1>
-                Converter Documentos
+                Converter Imagens
             </h1>
         </div>
         <div class="conversao-grid">
@@ -90,12 +90,12 @@
                 <form class="fileForm" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    
                     <select class="list-choice" id="format-select">
                         <option value="">Selecione o formato de saída</option>
+                        <option value="pdf">PNG</option>
+                        <option value="docx">JPG</option>
                     </select>
-                    
-                    <button type="submit" class="button-55" id="submit-button" disabled>Enviar</button>
+                    <button type="submit" class="button-55">Enviar</button>
                 </form>
             </div>
             <div style="grid-area: a3; padding: 5rem;">
@@ -107,19 +107,19 @@
                 </p>
             </div>
             <figure style="grid-area: a4; padding: 5rem; text-align: center;">
-                <img src="{% static 'images/pdf.png' %}" alt="pdf" width="110">
+                <img src="{% static 'images/png.png' %}" alt="ods" width="110">
             </figure>
             <div class="carl" style="grid-area: a5; padding: 5rem;">
                 <h2>Variedade de Formatos</h2>
                 <p class="text2">
-                    A ferramenta funciona com diversos tipos de documentos diferentes como TXT, DOCX e PDF. Além
+                    A ferramenta funciona com diversos tipos de imagens diferentes como PNG e JPG. Além
                     disso,
                     todas as conversões são feitas na nuvem, portanto, nenhuma conversão ocupará espaço no seu
                     armazenamento.
                 </p>
             </div>
             <figure style="grid-area: a6; padding: 5rem; text-align: center;">
-                <img src="{% static 'images/docx.png' %}" alt="docx" width="110">
+                <img src="{% static 'images/jpg.png' %}" alt="xlsx" width="110">
             </figure>
         </div>
         <div style="margin-top: 3rem; margin-bottom: 5rem;">
@@ -169,37 +169,6 @@
         }
 
         chaveSeguranca()
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const fileInput = document.querySelector('input[type="file"]');
-            const select = document.getElementById('format-select');
-            const submitButton = document.getElementById('submit-button');
-
-            fileInput.addEventListener('change', function () {
-                const fileName = fileInput.value;
-
-                // Limpa as opções existentes
-                select.innerHTML = '';
-                submitButton.disabled = true; // Desabilita o botão inicialmente
-
-                if (fileName.endsWith('.txt')) {
-                    select.innerHTML += '<option value="pdf">PDF</option>';
-                    select.innerHTML += '<option value="docx">DOCX</option>';
-                    submitButton.disabled = false; // Habilita o botão
-                } else if (fileName.endsWith('.pdf')) {
-                    select.innerHTML += '<option value="txt">TXT</option>';
-                    select.innerHTML += '<option value="docx">DOCX</option>';
-                    submitButton.disabled = false; // Habilita o botão
-                } else if (fileName.endsWith('.docx')) {
-                    select.innerHTML += '<option value="txt">TXT</option>';
-                    select.innerHTML += '<option value="pdf">PDF</option>';
-                    submitButton.disabled = false; // Habilita o botão
-                } else {
-                    select.innerHTML += '<option value="">Formato não suportado</option>'; // Mensagem de erro
-                    submitButton.disabled = true; // Desabilita o botão
-                }
-            });
-        });
     </script>
 </body>
 

@@ -68,7 +68,7 @@
     <div class="alinhamento">
         <div class="principal2">
             <h1>
-                Converter Documentos
+                Converter Vídeos
             </h1>
         </div>
         <div class="conversao-grid">
@@ -90,11 +90,11 @@
                 <form class="fileForm" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    
+
                     <select class="list-choice" id="format-select">
                         <option value="">Selecione o formato de saída</option>
                     </select>
-                    
+
                     <button type="submit" class="button-55" id="submit-button" disabled>Enviar</button>
                 </form>
             </div>
@@ -107,19 +107,19 @@
                 </p>
             </div>
             <figure style="grid-area: a4; padding: 5rem; text-align: center;">
-                <img src="{% static 'images/pdf.png' %}" alt="pdf" width="110">
+                <img src="{% static 'images/audio.png' %}" alt="audio" width="110">
             </figure>
             <div class="carl" style="grid-area: a5; padding: 5rem;">
                 <h2>Variedade de Formatos</h2>
                 <p class="text2">
-                    A ferramenta funciona com diversos tipos de documentos diferentes como TXT, DOCX e PDF. Além
+                    A ferramenta funciona com diversos tipos de multimídia diferente como MP3 e MP4. Além
                     disso,
                     todas as conversões são feitas na nuvem, portanto, nenhuma conversão ocupará espaço no seu
                     armazenamento.
                 </p>
             </div>
             <figure style="grid-area: a6; padding: 5rem; text-align: center;">
-                <img src="{% static 'images/docx.png' %}" alt="docx" width="110">
+                <img src="{% static 'images/video.png' %}" alt="video" width="110">
             </figure>
         </div>
         <div style="margin-top: 3rem; margin-bottom: 5rem;">
@@ -178,25 +178,16 @@
             fileInput.addEventListener('change', function () {
                 const fileName = fileInput.value;
 
-                // Limpa as opções existentes
                 select.innerHTML = '';
-                submitButton.disabled = true; // Desabilita o botão inicialmente
+                submitButton.disabled = true;
 
-                if (fileName.endsWith('.txt')) {
-                    select.innerHTML += '<option value="pdf">PDF</option>';
-                    select.innerHTML += '<option value="docx">DOCX</option>';
-                    submitButton.disabled = false; // Habilita o botão
-                } else if (fileName.endsWith('.pdf')) {
-                    select.innerHTML += '<option value="txt">TXT</option>';
-                    select.innerHTML += '<option value="docx">DOCX</option>';
-                    submitButton.disabled = false; // Habilita o botão
-                } else if (fileName.endsWith('.docx')) {
-                    select.innerHTML += '<option value="txt">TXT</option>';
-                    select.innerHTML += '<option value="pdf">PDF</option>';
-                    submitButton.disabled = false; // Habilita o botão
-                } else {
-                    select.innerHTML += '<option value="">Formato não suportado</option>'; // Mensagem de erro
-                    submitButton.disabled = true; // Desabilita o botão
+                if (fileName.endsWith('.mp4')) {
+                    select.innerHTML += '<option value="mp3">MP3</option>';
+                    submitButton.disabled = false;
+                }
+                else {
+                    select.innerHTML += '<option value="">Formato não suportado</option>';
+                    submitButton.disabled = true;
                 }
             });
         });

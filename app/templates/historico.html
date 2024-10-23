@@ -20,6 +20,11 @@
 <body>
     <nav class="navegacao">
         <div class="navegacao-items">
+            <a href="{% url 'index' %}">
+                <button class="button-55" role="button">
+                    <span class="text">Voltar</span>
+                </button>
+            </a>
             <div class="list-choice">
                 <div class="list-choice-title">Conversores</div>
                 <div class="list-choice-objects">
@@ -69,31 +74,53 @@
         </div>
     </nav>
     <div class="alinhamento">
-        <div class="titulo1">
-            <figure>
-                <img src="{% static 'images/pasta.png' %}" alt="pasta" width="80">
-            </figure>
-            <div class="principal">
-                <h1>FOWLDA</h1>
-            </div>
-            <figure>
-                <img src="{% static 'images/pasta.png' %}" alt="pasta" width="80">
-            </figure>
+        <div class="principal2">
+            <h1>
+                Histórico de Conversões
+            </h1>
         </div>
-        <div class="text1">
-            <p>
-                Transforme seus arquivos de maneira rápida e fácil com nosso conversor online. Com suporte para uma
-                ampla
-                variedade de formatos, oferecemos uma solução completa para suas necessidades de conversão de
-                documentos,
-                imagens, áudio e vídeo. Seja você um profissional buscando converter arquivos de trabalho ou um usuário
-                comum precisando de uma solução prática, nosso site está aqui para ajudar.
-            </p>
-        </div>
-        <br>
-        <br>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Nome
+                    </th>
+                    <th>
+                        Tamanho
+                    </th>
+                    <th>
+                        Data
+                    </th>
+                    <th>
+                        Ações
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        wajerngeijorngv
+                    </td>
+                    <td>
+                        51345134TB
+                    </td>
+                    <td>
+                        46/28/2864
+                    </td>
+                    <td>
+                        <button class="button-55">
+                            Baixar
+                        </button>
+                        <button style="background-color: rgb(219, 77, 77);" class="button-55">
+                            Excluir
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
         <div>
-            <button class="button-55" role="button" onclick="togglePopup()" style="padding: 1rem;">CONVERTER
+            <button class="button-55" role="button" onclick="togglePopup()" style="padding: 1rem; margin-top: 5rem;">CONVERTER
                 ARQUIVOS</button>
         </div>
 

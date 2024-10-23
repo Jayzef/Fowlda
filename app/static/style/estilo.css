@@ -2,19 +2,388 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-h1{
-    font-family: "Bebas Neue", sans-serif;
+/* geral */
+
+body {
+    margin: 0;
 }
 
-h2{
+h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 3rem;
+}
+
+h2 {
     font-family: "Nunito Sans", sans-serif;
 }
 
-p{
+p {
+    font-size: 1.2rem;
+    font-family: "Poppins", sans-serif;
+}
+
+a {
+    font-family: "Poppins", sans-serif;
+    text-decoration: none;
+    font-style: normal;
+}
+
+button {
     font-family: "Poppins", sans-serif;
 }
 
 img {
     user-select: none;
     pointer-events: none;
+}
+
+.alinhamento {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.conversao-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-areas: 
+        'a1 a2 a3' 
+        'a4 a5 a6';
+    gap: 1rem;
+}
+
+/*navegacao*/
+
+.navegacao {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #793AE0;
+    box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 1px;
+}
+
+.navegacao-items {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+    margin: 0 2rem 0 2rem;
+    color: white;
+}
+
+/*titulo nav*/
+
+.titulo-nav { 
+    font-family: "Bebas Neue", sans-serif;
+    color: white;
+    font-style: italic;
+    font-size: 2.8rem;
+    font-weight: 700;
+}
+
+/*lista nav*/
+
+.list-choice {
+    width: 300px;
+    margin: 1em auto;
+    position: relative;
+    cursor: pointer;
+}
+
+.list-choice input[type="radio"] {
+    position: absolute;
+    left: -9999px;
+}
+
+.list-choice-title {
+    font-family: "Poppins", sans-serif;
+    width: 100%;
+    display: block;
+    background: #b493eb;
+    text-align: center;
+    padding: 0.55em 1em;
+    box-sizing: border-box;
+    color: #FFF;
+    text-shadow: 0 1px 0 #CACACA;
+    border-radius: 0.2em;
+    border: 1px solid #000;
+}
+
+.list-choice:hover .list-choice-title {
+    border-radius: 0.2em 0.2em 0 0;
+}
+
+.list-choice-objects label:nth-last-of-type(1) span {
+    border-radius: 0 0 0.2em 0.2em;
+}
+
+.list-choice input[type="radio"]+span {
+    color: #FFF;
+    background: #b493eb;
+    padding: 0.55em 1em;
+    display: block;
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+    width: 100%;
+    border-top: 1px solid #000;
+    border-right: 1px solid #000;
+    border-left: 1px solid #000;
+}
+
+.list-choice-objects {
+    position: absolute;
+    top: 0;
+    padding-top: 2.1em;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 250ms ease;
+}
+
+.list-choice:hover .list-choice-objects input[type="radio"]+span {
+    position: relative;
+    top: 0;
+    transition: all 250ms ease-in-out;
+}
+
+.list-choice:hover input[type="radio"]+span:hover {
+    background: #A885E0;
+
+}
+
+.list-choice:hover input[type="radio"]:checked+span:hover {
+    background: #896cb9;
+}
+
+.list-choice input[type="radio"]:checked+span {
+    background: #896cb9;
+    position: absolute;
+    top: 0em;
+    border-radius: 0.2em;
+}
+
+.list-choice:hover input[type="radio"]:checked+span {
+    border-radius: 0;
+}
+
+.list-choice:hover .list-choice-objects label:nth-last-of-type(1) input[type="radio"]:checked+span {
+    border-radius: 0 0 0.2em 0.2em;
+}
+
+.list-choice:hover .list-choice-objects {
+    max-height: 540px;
+}
+
+/*botao nav*/
+
+.button-55 {
+    appearance: button;
+    background-color: #A885E0;
+    background-image: none;
+    border: 1px solid #000;
+    border-radius: 4px;
+    box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 1px;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    margin: 0 5px 10px 0;
+    overflow: visible;
+    padding: 6px 20px;
+    text-align: center;
+    text-transform: none;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.button-55:focus {
+    text-decoration: none;
+}
+
+.button-55:hover {
+    text-decoration: none;
+    background-color: #9675ca;
+}
+
+.button-55:active {
+    box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+    outline: 0;
+}
+
+.button-55:not([disabled]):active {
+    box-shadow: #fff 2px 2px 0 0, #000 2px 2px 0 1px;
+    transform: translate(2px, 2px);
+}
+
+@media (min-width: 768px) {
+    .button-55 {
+        padding: 6px 20px;
+    }
+}
+
+#perfil {
+    display: flex;
+    align-items: center;
+    padding-right: 0.01px;
+    padding-left: 2.2rem;
+    padding-bottom: 0;
+    padding-top: 0.4rem;
+    margin: 1rem;
+}
+
+/*titulo principal*/
+
+.titulo1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+}
+
+.principal h1 {
+    position: relative;
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 0px;
+    width: 20rem;
+    text-align: center;
+    margin: 2rem 0 3rem 0;
+    white-space: nowrap;
+    border: 2px solid #222;
+    padding: 1rem 4rem 1rem 4rem;
+    box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 2px;
+    user-select: none;
+}
+
+.principal2 h1 {
+    position: relative;
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: 0px;
+    width: 50rem;
+    text-align: center;
+    margin: 2rem 0 3rem 0;
+    white-space: nowrap;
+    border: 2px solid #222;
+    padding: 1rem 4rem 1rem 4rem;
+    box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 2px;
+    user-select: none;
+    margin-top: 5rem;
+}
+
+/*textos*/
+
+.text1 {
+    text-align: justify;
+    margin: 3rem 30rem 0 30rem;
+    font-size: 1.2rem;
+}
+
+.text2 {
+    text-align: justify;
+    font-size: 1.2rem;
+}
+
+.carl {
+    border: 2px solid #000;
+    border-radius: 6px;
+    box-shadow: #222222 4px 4px 0 0, #000 4px 4px 0 2px;
+}
+
+/*formularios*/
+
+.dropzone {
+    border: 5px #896cb9 dashed;
+    border-radius: 35px;
+}
+
+.fileform, select {
+    background-color: #896cb9;
+    border-radius: 5px;
+    padding: 0.5rem;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    border: 2px solid black;
+}
+.feedback {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.feedback textarea {
+    border: 2px solid #000;
+    border-radius: 6px;
+    box-shadow: #222222 4px 4px 0 0, #000 4px 4px 0 2px;
+    max-height: 7rem;
+    min-width: 20rem;
+    max-width: 30rem;
+    min-height: 7rem;
+    font-family: "Poppins", sans-serif;
+}
+
+/*tabelas*/
+
+table {
+    box-shadow: #222222 4px 4px 0 0, #000 4px 4px 0 2px;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    border: 2px solid black;
+}
+
+th {
+    width: 25%;
+    height: 5rem;
+    background-color: #A885E0;
+    color: white;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
+}
+
+td {
+    width: 25%;
+    height: 5rem;
+    text-align: center;
+    background-color: #e6d7ff;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.05rem;
+}
+
+/*extra*/
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #896cb9;
+    border-radius: 16px;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
 }
