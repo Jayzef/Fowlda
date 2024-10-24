@@ -16,6 +16,7 @@ from odf.text import P
 from moviepy.editor import VideoFileClip, AudioFileClip, ImageClip
 import os
 import tempfile
+from PIL import Image
 
 class IndexView(View):
     def get(self, request):
@@ -33,76 +34,118 @@ class ConversaoView(View):
         form = ArquivoForm(request.POST, request.FILES)
         if form.is_valid():
             uploaded_file = request.FILES['arquivo']
+            formato_selecionado = request.POST['formato']  # Captura o formato escolhido
             base_name = uploaded_file.name.rsplit('.', 1)[0]  # Nome base do arquivo sem extensão
 
             if uploaded_file.name.endswith('.pdf'):
-                # Converter PDF para DOCX
-                pdf_reader = PyPDF2.PdfReader(uploaded_file)
-                doc = Document()
-                txt_content = []
+                if formato_selecionado == 'txt':
+                    # Converter PDF para TXT
+                    pdf_reader = PyPDF2.PdfReader(uploaded_file)
+                    txt_content = []
 
-                for page in pdf_reader.pages:
-                    text = page.extract_text()
-                    doc.add_paragraph(text)
-                    txt_content.append(text)
+                    for page in pdf_reader.pages:
+                        text = page.extract_text()
+                        txt_content.append(text)
 
-                # Salvar como DOCX
-                docx_io = io.BytesIO()
-                doc.save(docx_io)
-                docx_io.seek(0)
+                    # Retornar o arquivo TXT
+                    response = HttpResponse(content_type='text/plain')
+                    response['Content-Disposition'] = f'attachment; filename="{base_name}.txt"'
+                    response.write("\n".join(txt_content).encode('utf-8'))
+                    return response
 
-                # Salvar como TXT
-                txt_io = io.BytesIO()
-                txt_io.write("\n".join(txt_content).encode('utf-8'))
-                txt_io.seek(0)
+                elif formato_selecionado == 'docx':
+                    # Converter PDF para DOCX
+                    pdf_reader = PyPDF2.PdfReader(uploaded_file)
+                    doc = Document()
+                    for page in pdf_reader.pages:
+                        text = page.extract_text()
+                        doc.add_paragraph(text)
 
-                # Retornar os arquivos
-                response_zip = HttpResponse(content_type='application/zip')
-                response_zip['Content-Disposition'] = f'attachment; filename="{base_name}.zip"'
-                
-                with zipfile.ZipFile(response_zip, 'w') as zf:
-                    zf.writestr(f"{base_name}.docx", docx_io.getvalue())
-                    zf.writestr(f"{base_name}.txt", txt_io.getvalue())
+                    # Retornar o arquivo DOCX
+                    docx_io = io.BytesIO()
+                    doc.save(docx_io)
+                    docx_io.seek(0)
 
-                return response_zip
+                    response = HttpResponse(docx_io.getvalue(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                    response['Content-Disposition'] = f'attachment; filename="{base_name}.docx"'
+                    return response
 
             elif uploaded_file.name.endswith('.docx'):
-                # Converter DOCX para PDF
-                doc = Document(uploaded_file)
-                pdf_io = io.BytesIO()
-                c = canvas.Canvas(pdf_io, pagesize=letter)
-                width, height = letter
-                txt_content = []
+                if formato_selecionado == 'txt':
+                    # Converter DOCX para TXT
+                    doc = Document(uploaded_file)
+                    txt_content = []
 
-                for paragraph in doc.paragraphs:
-                    text = paragraph.text
-                    c.drawString(72, height - 72, text)  # Margem de 1 polegada
-                    height -= 12  # Mover para baixo
-                    txt_content.append(text)
+                    for paragraph in doc.paragraphs:
+                        txt_content.append(paragraph.text)
 
-                c.save()
-                pdf_io.seek(0)
+                    # Retornar o arquivo TXT
+                    response = HttpResponse(content_type='text/plain')
+                    response['Content-Disposition'] = f'attachment; filename="{base_name}.txt"'
+                    response.write("\n".join(txt_content).encode('utf-8'))
+                    return response
 
-                # Salvar como TXT
-                txt_io = io.BytesIO()
-                txt_io.write("\n".join(txt_content).encode('utf-8'))
-                txt_io.seek(0)
+                elif formato_selecionado == 'pdf':
+                    # Converter DOCX para PDF
+                    doc = Document(uploaded_file)
+                    pdf_io = io.BytesIO()
+                    c = canvas.Canvas(pdf_io, pagesize=letter)
+                    width, height = letter
 
-                # Retornar os arquivos
-                response_zip = HttpResponse(content_type='application/zip')
-                response_zip['Content-Disposition'] = f'attachment; filename="{base_name}.zip"'
+                    for paragraph in doc.paragraphs:
+                        c.drawString(72, height - 72, paragraph.text)  # Margem de 1 polegada
+                        height -= 12  # Mover para baixo
 
-                with zipfile.ZipFile(response_zip, 'w') as zf:
-                    zf.writestr(f"{base_name}.pdf", pdf_io.getvalue())
-                    zf.writestr(f"{base_name}.txt", txt_io.getvalue())
+                    c.save()
+                    pdf_io.seek(0)
 
-                return response_zip
+                    # Retornar o arquivo PDF
+                    response = HttpResponse(pdf_io.getvalue(), content_type='application/pdf')
+                    response['Content-Disposition'] = f'attachment; filename="{base_name}.pdf"'
+                    return response
+
+            elif uploaded_file.name.endswith('.txt'):
+                if formato_selecionado == 'docx':
+                    # Converter TXT para DOCX
+                    txt_content = uploaded_file.read().decode('utf-8').splitlines()
+                    doc = Document()
+                    for line in txt_content:
+                        doc.add_paragraph(line)
+
+                    # Retornar o arquivo DOCX
+                    docx_io = io.BytesIO()
+                    doc.save(docx_io)
+                    docx_io.seek(0)
+
+                    response = HttpResponse(docx_io.getvalue(), content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+                    response['Content-Disposition'] = f'attachment; filename="{base_name}.docx"'
+                    return response
+
+                elif formato_selecionado == 'pdf':
+                    # Converter TXT para PDF
+                    txt_content = uploaded_file.read().decode('utf-8').splitlines()
+                    pdf_io = io.BytesIO()
+                    c = canvas.Canvas(pdf_io, pagesize=letter)
+                    width, height = letter
+
+                    for line in txt_content:
+                        c.drawString(72, height - 72, line)  # Margem de 1 polegada
+                        height -= 12  # Mover para baixo
+
+                    c.save()
+                    pdf_io.seek(0)
+
+                    # Retornar o arquivo PDF
+                    response = HttpResponse(pdf_io.getvalue(), content_type='application/pdf')
+                    response['Content-Disposition'] = f'attachment; filename="{base_name}.pdf"'
+                    return response
 
             else:
                 messages.error(request, "Formato de arquivo não suportado.")
                 return redirect('conversao')
 
         return render(request, 'conversao.html', {'form': form})
+
     
 class ConversaoPLAView(View):
     def get(self, request):
@@ -205,10 +248,46 @@ class ConversaoVIDView(View):
     
 class ConversaoIMGView(View):
     def get(self, request):
-        return render(request, 'conversaoIMG.html')
-    
+        form = ArquivoForm()
+        return render(request, 'conversaoIMG.html', {'form': form})
+
     def post(self, request):
-        return render(request, 'conversaoIMG.html')
+        form = ArquivoForm(request.POST, request.FILES)
+        if form.is_valid():
+            uploaded_file = request.FILES['arquivo']
+            base_name = uploaded_file.name.rsplit('.', 1)[0]
+
+            if uploaded_file.name.endswith('.jpg'):
+                # Converter JPG para PNG
+                with Image.open(uploaded_file) as img:
+                    with tempfile.NamedTemporaryFile(suffix='.png', delete=False) as png_io:
+                        img.save(png_io.name, format='PNG')
+                        png_io.seek(0)
+                        response = HttpResponse(open(png_io.name, 'rb'), content_type='image/png')
+                        response['Content-Disposition'] = f'attachment; filename="{base_name}.png"'
+                
+                # Limpeza de arquivos temporários
+                os.remove(png_io.name)
+                return response
+
+            elif uploaded_file.name.endswith('.png'):
+                # Converter PNG para JPG
+                with Image.open(uploaded_file) as img:
+                    with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as jpg_io:
+                        img.convert('RGB').save(jpg_io.name, format='JPEG')
+                        jpg_io.seek(0)
+                        response = HttpResponse(open(jpg_io.name, 'rb'), content_type='image/jpeg')
+                        response['Content-Disposition'] = f'attachment; filename="{base_name}.jpg"'
+
+                # Limpeza de arquivos temporários
+                os.remove(jpg_io.name)
+                return response
+
+            else:
+                messages.error(request, "Formato de arquivo não suportado.")
+                return redirect('conversaoIMG')
+
+        return render(request, 'conversaoIMG.html', {'form': form})
     
 class HistoricoView(View):
     def get(self, request):

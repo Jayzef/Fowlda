@@ -90,12 +90,12 @@
                 <form class="fileForm" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
+
                     <select class="list-choice" id="format-select">
                         <option value="">Selecione o formato de saída</option>
-                        <option value="pdf">PNG</option>
-                        <option value="docx">JPG</option>
                     </select>
-                    <button type="submit" class="button-55">Enviar</button>
+
+                    <button type="submit" class="button-55" id="submit-button" disabled>Enviar</button>
                 </form>
             </div>
             <div style="grid-area: a3; padding: 5rem;">
@@ -169,6 +169,30 @@
         }
 
         chaveSeguranca()
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileInput = document.querySelector('input[type="file"]');
+            const select = document.getElementById('format-select');
+            const submitButton = document.getElementById('submit-button');
+
+            fileInput.addEventListener('change', function () {
+                const fileName = fileInput.value;
+
+                select.innerHTML = '';
+                submitButton.disabled = true;
+
+                if (fileName.endsWith('.jpg')) {
+                    select.innerHTML += '<option value="png">PNG</option>';
+                    submitButton.disabled = false;
+                } else if (fileName.endsWith('.png')) {
+                    select.innerHTML += '<option value="jpg">JPG</option>';
+                    submitButton.disabled = false;
+                } else {
+                    select.innerHTML += '<option value="">Formato não suportado</option>';
+                    submitButton.disabled = true;
+                }
+            });
+        });
     </script>
 </body>
 
