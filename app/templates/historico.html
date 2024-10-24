@@ -74,6 +74,25 @@
         </div>
     </nav>
     <div class="alinhamento">
+        <!-- <div class="popup">
+            <form class="formulario" method="post" enctype="multipart/form-data" style="display: none;">
+                {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                    {% if message.tags == "success" %}
+                    <li class="sucesso">{{ message }}</li>
+                    {% elif message.tags == "error" %}
+                    <li class="erro">{{ message }}</li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <p class="insira">Insira suas informações: </p>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" style="width: fit-content;" class="butao">Enviar</button>
+            </form>
+        </div> -->
         <div class="principal2">
             <h1>
                 Histórico de Conversões
@@ -92,21 +111,20 @@
                         Data
                     </th>
                     <th>
+                        Email
+                    </th>
+                    <th>
                         Ações
                     </th>
                 </tr>
             </thead>
             <tbody>
+                    {% for conversao in conversoes %}
                 <tr>
-                    <td>
-                        wajerngeijorngv
-                    </td>
-                    <td>
-                        51345134TB
-                    </td>
-                    <td>
-                        46/28/2864
-                    </td>
+                    <td>{{ conversao.nome_arquivo }}</td>
+                    <td>{{ conversao.fconvertido }}</td>
+                    <td>{{ conversao.data_conversao }}</td>
+                    <td>{{ conversao.usuario.email }}</td>
                     <td>
                         <button class="button-55">
                             Baixar
@@ -116,6 +134,7 @@
                         </button>
                     </td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
 

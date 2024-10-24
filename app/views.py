@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
-from .forms import ArquivoForm
+from .forms import *
 import PyPDF2
 import zipfile
 from docx import Document
@@ -20,6 +20,7 @@ from PIL import Image
 
 class IndexView(View):
     def get(self, request):
+        form = CadastroForm()
         return render(request, 'index.html')
     
     def post(self, request):
@@ -295,3 +296,26 @@ class HistoricoView(View):
     
     def post(self, request):
         return render(request, 'historico.html')
+
+# form = CadastroForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data.get('email')
+#             senha = form.cleaned_data.get('senha')
+#             perfil = form.cleaned_data.get('perfil')  # O valor padrão será sempre False
+
+#             usuario_existente = Usuario.objects.filter(email=email).exists()
+#             senha_correta = Usuario.objects.filter(email=email, senha=senha).exists()
+            
+#             if usuario_existente and senha_correta:
+#                 request.session['email'] = email
+#                 return redirect('historico')
+#             elif not usuario_existente:
+#                 usuario = form.save()
+#                 usuario.perfil = perfil
+#                 usuario.save()
+#                 messages.success(request, 'Usuário cadastrado com sucesso!')
+#                 return redirect('index')
+#             else:
+#                 messages.error(request, 'Senha incorreta!')
+#         else:
+#             messages.error(request, 'Formulário inválido!')
